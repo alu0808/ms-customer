@@ -1,0 +1,37 @@
+server:
+  # Puerto donde levantará el microservicio.
+  port: 8080
+
+spring:
+  application:
+    # Identificador del microservicio (vital luego para el API Gateway y logs centralizados)
+    name: ms-customer
+
+  threads:
+    virtual:
+      enabled: true
+
+  datasource:
+    # Cadena de conexión hacia tu Docker local.
+    # encrypt=true y trustServerCertificate=true evitan el error de certificados locales (PKIX)
+    url: jdbc:sqlserver://localhost:1433;databaseName=CustomerDB;encrypt=true;trustServerCertificate=true;
+    username: SA
+    password: AdminCredit2026!
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+    hikari:
+      # HikariCP es el gestor de conexiones por defecto.
+      # 10 es un límite sano para no asfixiar la base de datos en desarrollo.
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      # 'update' creará/modificará las tablas SQL basándose en nuestras clases Java automáticamente.
+      # Nota de Arquitectura: En PRODUCCIÓN bancaria esto siempre es 'validate' o 'none'.
+      ddl-auto: update
+
+    # Muestra los queries SQL en la consola para auditar qué hace Hibernate por debajo.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
