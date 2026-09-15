@@ -17,11 +17,10 @@ pipeline {
 
         stage('2. Análisis SAST (SonarQube)') {
                     steps {
-                        echo 'Enviando código al inspector de calidad (Bypass Explícito)...'
+                        echo 'Enviando código al inspector de calidad (Enrutamiento por Host)...'
                         withSonarQubeEnv('sonarqube-bcp') {
-                            // Forzamos explícitamente la URL y el Token en el comando de Maven.
-                            // Además, añadimos -X para tener logs detallados (Modo Debug) si vuelve a fallar.
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName=ms-customer -Dsonar.host.url=http://sonarqube_bcp:9000 -Dsonar.token=$SONAR_AUTH_TOKEN -X'
+                            // Usamos la IP especial 172.17.0.1 para salir del contenedor de Jenkins y entrar a SonarQube por el puerto público.
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName=ms-customer -Dsonar.host.url=http://172.17.0.1:9000 -Dsonar.token=$SONAR_AUTH_TOKEN -X'
                         }
                     }
                 }
