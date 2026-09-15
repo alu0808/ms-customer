@@ -17,10 +17,11 @@ pipeline {
 
         stage('2. Análisis SAST (SonarQube)') {
                     steps {
-                        echo 'Enviando código al inspector de calidad...'
+                        echo 'Enviando código al inspector de calidad (Bypass Explícito)...'
                         withSonarQubeEnv('sonarqube-bcp') {
-                            // Le pasamos explícitamente el DNI (Project Key) y el Nombre
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName=ms-customer'
+                            // Forzamos explícitamente la URL y el Token en el comando de Maven.
+                            // Además, añadimos -X para tener logs detallados (Modo Debug) si vuelve a fallar.
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName=ms-customer -Dsonar.host.url=http://sonarqube_bcp:9000 -Dsonar.token=$SONAR_AUTH_TOKEN -X'
                         }
                     }
                 }
