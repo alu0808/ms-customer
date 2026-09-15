@@ -20,7 +20,7 @@ pipeline {
                         echo 'Enviando código al inspector de calidad...'
                         withSonarQubeEnv('sonarqube-bcp') {
                             // Le pasamos explícitamente el DNI (Project Key) y el Nombre
-                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName="MS Customer"'
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName=ms-customer'
                         }
                     }
                 }
