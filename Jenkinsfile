@@ -16,14 +16,14 @@ pipeline {
         }
 
         stage('2. Análisis SAST (SonarQube)') {
-            steps {
-                echo 'Enviando código al inspector de calidad...'
-                // El nombre 'sonarqube-bcp' DEBE coincidir con el que pusiste en la configuración de Jenkins
-                withSonarQubeEnv('sonarqube-bcp') {
-                    sh 'mvn sonar:sonar'
+                    steps {
+                        echo 'Enviando código al inspector de calidad...'
+                        withSonarQubeEnv('sonarqube-bcp') {
+                            // Le pasamos explícitamente el DNI (Project Key) y el Nombre
+                            sh 'mvn sonar:sonar -Dsonar.projectKey=ms-customer -Dsonar.projectName="MS Customer"'
+                        }
+                    }
                 }
-            }
-        }
 
         stage('3. Quality Gate (Puerta de Calidad)') {
             steps {
